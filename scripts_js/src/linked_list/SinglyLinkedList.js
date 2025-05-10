@@ -1,90 +1,97 @@
 class Node {
-	constructor(data) {
-		this.data = data;
-		this.next = null;
-	}
+  constructor(data) {
+    this.data = data;
+    this.next = null;
+  }
 }
 
 class SinglyLinkedList {
-	constructor() {
-		this.head = null;
-		this.size = 0;
-	}
+  constructor() {
+    this.head = null;
+    this.tail = null;
+    this.size = 0;
+  }
 
-	append(data) {
-		const newNode = new Node(data);
-		this.size++;
+  append(data) {
+    const newNode = new Node(data);
+    this.size++;
 
-		if (!this.head) {
-			this.head = newNode;
-			return;
-		}
+    if (!this.head) {
+      this.head = newNode;
+      this.tail = newNode;
+      return;
+    }
 
-		let current = this.head;
-		while (current.next) {
-			current = current.next;
-		}
-		current.next = newNode;
-	}
+    //nayem bhai's way
+    // let current = this.head;
+    // while (current.next) {
+    //   current = current.next;
+    // }
+    // current.next = newNode;
 
-	// Time: O(1), Space: O(1)
-	prepend(data) {
-		const newNode = new Node(data);
-		this.size++;
+    this.tail.next = newNode; // Use tail
+    this.tail = newNode;
+  }
 
-		if (!this.head) {
-			this.head = newNode;
-			return;
-		}
+  // Time: O(1), Space: O(1)
+  prepend(data) {
+    const newNode = new Node(data);
+    this.size++;
 
-		newNode.next = this.head;
-		this.head = newNode;
-	}
+    if (!this.head) {
+      this.head = newNode;
+      this.tail = newNode;
+      return;
+    }
 
-	toString() {
-		let current = this.head;
-		let result = '';
+    newNode.next = this.head;
+    this.head = newNode;
+  }
 
-		while (current) {
-			const arrow = current.next ? ' -> ' : '';
-			result += `${current.data}${arrow}`;
-			current = current.next;
-		}
+  toString() {
+    let current = this.head;
+    let result = "";
 
-		return result;
-	}
+    while (current) {
+      const arrow = current.next ? " -> " : "";
+      result += `${current.data}${arrow}`;
+      current = current.next;
+    }
 
-	insert(data, index) {
-		if (index < 0 || index > this.size) {
-			throw new Error('Invalid index');
-		}
+    return result;
+  }
 
-		if (index === 0) {
-			this.prepend(data);
-			return;
-		}
+  insert(data, index) {
+    if (index < 0 || index > this.size) {
+      throw new Error("Invalid index");
+    }
 
-		if (index === this.size) {
-			this.append(data); // can be replaceable using tail pointer
-			return;
-		}
+    if (index === 0) {
+      this.prepend(data);
+      return;
+    }
 
-		const newNode = new Node(data);
-		this.size++;
+    if (index === this.size) {
+      this.append(data); // can be replaceable using tail pointer
+      return;
+    }
 
-		let current = this.head;
-		let previous = null;
-		let count = 0;
+    const newNode = new Node(data);
+    this.size++;
 
-		while (count < index) {
-			previous = current;
-			current = current.next;
-			count++;
-		}
+    let current = this.head;
+    let previous = null;
+    let count = 0;
 
-		newNode.next = current;
-		previous.next = newNode;
-	}
+    while (count < index) {
+      previous = current;
+      current = current.next;
+      count++;
+    }
+
+    newNode.next = current;
+    previous.next = newNode;
+  }
 }
 
 const list = new SinglyLinkedList();
